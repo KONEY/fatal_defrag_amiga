@@ -976,7 +976,7 @@ BG1:
 	INCBIN	"onePlane_18.raw"		; POS 40	SHIFT 3
 	INCBIN	"BG_METAL_320256_4.raw"	; POS 40	SHIFT 4
 					; POS 41
-	INCBIN	"onePlane_16.raw"		; POS 60
+	INCBIN	"onePlane_20.raw"		; POS 60
 
 FONT:	DC.L	0,0	; SPACE CHAR
 	INCBIN	"scummfnt_8x752.raw",0
