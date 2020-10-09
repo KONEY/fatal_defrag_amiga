@@ -352,7 +352,9 @@ SONG_POSITION_EVENTS:
 
 	CMPI.W	#130,D4		; BEATS * 14frames
 	BNE.S	.doNothing7
+	MOVEM.L	D0-A6,-(SP)
 	JSR	P61_End
+	MOVEM.L	(SP)+,D0-A6
 	.doNothing7:
 	; THIS PART IS REPEATED FOR EVERY POSITION WE WANT TO TRIG SOMETHING
 
@@ -394,9 +396,9 @@ ENDING_CODE:
 	BNE.W	MainLoop		; then loop
 	;*--- exit ---*
 	;;    ---  Call P61_End  ---
-	MOVEM.L D0-A6,-(SP)
-	JSR P61_End
-	MOVEM.L (SP)+,D0-A6
+	MOVEM.L	D0-A6,-(SP)
+	JSR	P61_End
+	MOVEM.L	(SP)+,D0-A6
 	RTS
 
 ;********** Demo Routines **********
@@ -848,10 +850,16 @@ __HW_DISPLACE:
 	BTST	#0,D0
 	BEQ.S	.waitNextRaster
 
-	CMP.W	#$2F00,D2
+	CMP.W	#$0A00,D2	; DONT DISPLACE TXT
+	BGE.S	.dontSkip		; DONT DISPLACE TXT
+	MOVE.W	#0,BPLCON1	; RESET REGISTER
+	
+	.dontSkip:
+	CMP.W	#$2F00,D2	; 12.032
 	BNE.S	.waitNextRaster
 
 	MOVE.W	#0,BPLCON1	; RESET REGISTER
+
 	MOVEM.L	(SP)+,D0-A6	; FETCH FROM STACK
 	RTS
 
@@ -934,7 +942,6 @@ BLITPLANEOFFSET:	DC.W 0
 BGSHIFTCOUNTER0:	DC.W 1
 BGSHIFTCOUNTER1:	DC.W 1
 BGSHIFTOFFSET:	DC.W bwid*h
-BGSONGPOS:	DC.W 7-1
 BGISSHIFTING:	DC.W 0
 PATCH:		DS.B 10*64*bpls	;I need a buffer to save trap BG
 
