@@ -389,13 +389,15 @@ ALWAYS_TRIGGERED_EVENTS:
 
 ENDING_CODE:
 	BTST	#6,$BFE001
-	BNE.S	.DontShowRasterTime
-	MOVE.W	#$FF0,$180(A6)	; show rastertime left down to $12c
-	.DontShowRasterTime:
+	BEQ.W	.quit		; then loop
+	;BNE.S	.DontShowRasterTime
+	;MOVE.W	#$FF0,$180(A6)	; show rastertime left down to $12c
+	;.DontShowRasterTime:
 	BTST	#2,$DFF016	; POTINP - RMB pressed?
 	BNE.W	MainLoop		; then loop
+	.quit:
 	;*--- exit ---*
-	;;    ---  Call P61_End  ---
+	;    ---  Call P61_End  ---
 	MOVEM.L	D0-A6,-(SP)
 	JSR	P61_End
 	MOVEM.L	(SP)+,D0-A6
@@ -948,7 +950,6 @@ PATCH:		DS.B 10*64*bpls	;I need a buffer to save trap BG
 TEXTINDEX:	DC.W 0
 POS6_REACHED:	DC.B 0
 POS16_REACHED:	DC.B 0
-
 	;*******************************************************************************
 	SECTION	ChipData,DATA_C	;declared data that must be in chipmem
 	;*******************************************************************************
@@ -976,14 +977,14 @@ BG1:
 	INCBIN	"onePlane_18.raw"		; POS 40	SHIFT 3
 	INCBIN	"BG_METAL_320256_4.raw"	; POS 40	SHIFT 4
 					; POS 41
-	INCBIN	"onePlane_20.raw"		; POS 60
+	INCBIN	"onePlane_22.raw"		; POS 60
 
 FONT:	DC.L	0,0	; SPACE CHAR
 	INCBIN	"scummfnt_8x752.raw",0
 TEXT:
 	;DC. "--------------------------------------"		; WIDTH OF 1 SCREEN OF TEXT
-	DC.B "! WARNING EPILEPSY DANGER ALERT! RMB "
-	DC.B "TO QUIT! WELCOME TO  -=FATAL_DEFRAG=- "
+	DC.B "! WARNING EPILEPSY DANGER ALERT!     "
+	DC.B "WELCOME TO:  -==FATAL-DEFRAG==-   "
 	DC.B "KONEY FIRST AMIGA HARDCORE RELEASE!!! "
 	DC.B "BEST VIEWED ON A REAL AMIGA WITH CRT "
 	DC.B "AND HUGE LOUDSPEAKERZ!! OK SCROLLTEXT "
