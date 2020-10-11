@@ -12,6 +12,6 @@ www.discogs.com/artist/89784-Koney
 Requires any OCS/ECS Amiga with 512kb minimum
 Compiled with VASM 1.8d
 Tested on A500, A1000, A3000, A1200, A600+Vampire2
-Provided are executable file and self booting .ADF file
+Comes in executable file and self booting .ADF file
 Run from shell, quit with RMB
 -------------------------------------------------------------------------
