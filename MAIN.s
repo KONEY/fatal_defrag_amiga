@@ -23,9 +23,6 @@ SONG_POSITION_JUMP=0	;38
 bltx	=0
 ;blty	=0
 bltoffs	=210*(w/8)+bltx/8
-;blth	=12
-;bltw	=320/16
-;bltskip	=(320-320)/8
 
 ;********** Demo **********	;Demo-specific non-startup code below.
 Demo:	;a4=VBR, a6=Custom Registers Base addr
@@ -447,27 +444,6 @@ __InitCopperPalette:
 	MOVEM.L	(SP)+,D0-A6	; FETCH FROM STACK
 	RTS
 
-; THIS ROUTINE WILL POPULATE A GRAPHIC AREA WITH ANY DATA FROM MEMORY
-; NEEDS 3 PARAMS: SOURCE, TARGET, DEPTH (PLANES)
-__FILLGLITCHBG:
-	MOVEM.L	D0-A6,-(SP)	; SAVE TO STACK
-	MOVE.L	GLITCHER_SRC,A3
-	MOVE.L	GLITCHER_DEST,A4	; SOURCE DATA
-	MOVE.L	GLITCHER_DPH,D1	; UGUALI PER TUTTI I BITPLANE
-	.BITPLANESLOOP:
-	CLR	D4
-	MOVE.B	#h-1,D4		; QUANTE LINEE
-	.OUTERLOOP:		; NUOVA RIGA
-	CLR	D6
-	MOVE.B	#bpl-1,D6		; RESET D6
-	.INNERLOOP:
-	MOVE.B	(A3)+,(A4)+
-	DBRA	D6,.INNERLOOP
-	DBRA	D4,.OUTERLOOP
-	DBRA	D1,.BITPLANESLOOP
-	MOVEM.L	(SP)+,D0-A6	; FETCH FROM STACK
-	RTS
-
 ; FILLS A BUFFER WITH RANDOM DATA
 __FILLRNDBG:
 	MOVEM.L	D0-A6,-(SP)	; SAVE TO STACK
@@ -704,10 +680,9 @@ __SHIFTTEXT:
 				; bytes. Il rettangolo blittato
 				; e` largo 2 words, cioe` 4 bytes.
 				; Il valore del modulo e` dato dalla
-				; differenza tra le larghezze
 
-	MOVE.L	#_TXTSCROLLBUF-2,BLTAPTH	; BLTAPT  (fisso alla figura sorgente)
-	MOVE.L	#_TXTSCROLLBUF-2,BLTDPTH
+	MOVE.L	#TXTSCROLLBUF+9*bpl,BLTAPTH	; BLTAPT  (fisso alla figura sorgente)
+	MOVE.L	#TXTSCROLLBUF+9*bpl,BLTDPTH
 
 	MOVE.W	#9*64+320/16,BLTSIZE	; BLTSIZE (via al blitter !)
 				; adesso, blitteremo una figura di
@@ -956,9 +931,6 @@ POS16_REACHED:	DC.B 0
 
 KONEY2X:	INCBIN	"koney10x64.raw"
 
-TXTSCROLLBUF:	DS.B (bpl)*9
-_TXTSCROLLBUF:
-
 FRAMESINDEX:	DC.W 4
 
 BG1:	
@@ -1121,8 +1093,9 @@ Module1:	INCBIN	"FatalDefrag_v4.P61"	; code $9104
 	SECTION ChipBuffers,BSS_C	;BSS doesn't count toward exe size
 ;*******************************************************************************
 
-SCREEN1:		DS.B h*bwid	; Define storage for buffer 1
-SCREEN2:		DS.B h*bwid	; two buffers
+SCREEN1:		DS.W 1		; Define storage for buffer 1
+SCREEN2:		DS.W 1		; two buffers
 GLITCHBUFFER:	DS.B h*3*bpl	; some free space for glitch
+TXTSCROLLBUF:	DS.B (bpl)*9
 
 	END
