@@ -684,7 +684,7 @@ __SHIFTTEXT:
 	MOVE.L	#TXTSCROLLBUF+9*bpl,BLTAPTH	; BLTAPT  (fisso alla figura sorgente)
 	MOVE.L	#TXTSCROLLBUF+9*bpl,BLTDPTH
 
-	MOVE.W	#9*64+320/16,BLTSIZE	; BLTSIZE (via al blitter !)
+	MOVE.W	#9*64+w/16,BLTSIZE	; BLTSIZE (via al blitter !)
 				; adesso, blitteremo una figura di
 				; 2 word X 6 linee con una sola
 				; blittata coi moduli opportunamente
