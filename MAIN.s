@@ -32,7 +32,7 @@ Demo:	;a4=VBR, a6=Custom Registers Base addr
 	;** SOMETHING INSIDE HERE IS NEEDED TO MAKE MOD PLAY! **
 	;move.w	#%1110000000000000,INTENA	; Master and lev6	; NO COPPER-IRQ!
 
-	move.w	#$87c0,DMACON
+	move.w	#%1000011111000000,DMACON
 	;*--- clear screens ---*
 	lea	Screen1,a1
 	bsr.w	ClearScreen
@@ -1062,6 +1062,16 @@ BplPtrs:
 	DC.W $F4,0
 	DC.W $F6,0		;full 6 ptrs, in case you increase bpls
 	DC.W $100,BPLS*$1000+$200	;enable bitplanes
+
+SpritePointers:
+	DC.W $120,0,$122,0	; 0
+	DC.W $124,0,$126,0	; 1
+	DC.W $128,0,$12A,0	; 2
+	DC.W $12C,0,$12E,0	; 3
+	DC.W $130,0,$132,0	; 4
+	DC.W $134,0,$136,0	; 5
+	DC.W $138,0,$13A,0	; 6
+	DC.W $13C,0,$13E,0	; 7
 
 COPPERWAITS:
 	; HW DISPLACEMENT
