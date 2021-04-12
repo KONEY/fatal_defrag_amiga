@@ -1,5 +1,5 @@
 ;*** MiniStartup by Photon ***
-	INCDIR	"NAS:AMIGA/CODE/KONEY/"
+	INCDIR	"NAS:AMIGA/CODE/fatal_defrag_amiga/"
 	SECTION	"Code+PT12",CODE
 	INCLUDE	"PhotonsMiniWrapper1.04!.S"
 	INCLUDE	"Blitter-Register-List.S"	;use if you like ;)
